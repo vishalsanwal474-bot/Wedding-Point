@@ -1,0 +1,208 @@
+.quote-form,
+.quote-success {
+  background: var(--color-white);
+  border: 1px solid rgba(43, 37, 34, 0.08);
+  box-shadow: var(--shadow-soft);
+  padding: 1.75rem 1.35rem 1.85rem;
+}
+
+.quote-form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.quote-form__summary {
+  padding: 1rem 1.1rem;
+  background: var(--color-secondary);
+  border: 1px solid rgba(166, 124, 82, 0.2);
+}
+
+.quote-form__summary p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.quote-form__summary-note {
+  margin-top: 0.5rem !important;
+  font-size: 0.92rem;
+  color: rgba(43, 37, 34, 0.75);
+}
+
+.quote-form__grid {
+  display: grid;
+  gap: 1.15rem;
+}
+
+.quote-field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.quote-field label,
+.quote-fieldset legend {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.quote-field input,
+.quote-field select,
+.quote-field textarea {
+  width: 100%;
+  border: 1px solid rgba(43, 37, 34, 0.16);
+  border-radius: var(--radius-sm);
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: 0.8rem 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quote-field textarea {
+  resize: vertical;
+  min-height: 8rem;
+}
+
+.quote-field input:focus,
+.quote-field select:focus,
+.quote-field textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(166, 124, 82, 0.18);
+}
+
+.quote-field input[aria-invalid='true'],
+.quote-field select[aria-invalid='true'],
+.quote-field textarea[aria-invalid='true'] {
+  border-color: #9a4a3a;
+}
+
+.quote-field__error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #9a4a3a;
+}
+
+.quote-fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.quote-services {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.quote-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid rgba(43, 37, 34, 0.1);
+  background: var(--color-background);
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.quote-check:hover,
+.quote-check:has(input:checked) {
+  border-color: rgba(166, 124, 82, 0.45);
+  background: rgba(247, 241, 234, 0.7);
+}
+
+.quote-check input {
+  margin-top: 0.15rem;
+  accent-color: var(--color-accent);
+}
+
+.quote-check span {
+  line-height: 1.45;
+}
+
+.quote-form__footer {
+  display: grid;
+  gap: 1rem;
+  padding-top: 0.25rem;
+}
+
+.quote-form__privacy {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(43, 37, 34, 0.7);
+  line-height: 1.6;
+}
+
+.quote-success {
+  text-align: left;
+}
+
+.quote-success:focus {
+  outline: none;
+}
+
+.quote-success__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.quote-success h2 {
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.quote-success p {
+  margin: 0 0 0.75rem;
+  line-height: 1.7;
+  color: rgba(43, 37, 34, 0.82);
+}
+
+.quote-success__note {
+  margin-bottom: 1.5rem !important;
+}
+
+.quote-success__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .quote-form,
+  .quote-success {
+    padding: 2.25rem;
+  }
+
+  .quote-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quote-field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .quote-services {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .quote-form__footer {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-field input,
+  .quote-field select,
+  .quote-field textarea,
+  .quote-check {
+    transition: none;
+  }
+}

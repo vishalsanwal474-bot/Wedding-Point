@@ -1,0 +1,6 @@
+.protected-route-loading {
+  min-height: 60vh;
+  display: grid;
+  place-items: center;
+  background: var(--color-secondary);
+}

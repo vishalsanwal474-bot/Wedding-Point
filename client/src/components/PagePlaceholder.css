@@ -1,0 +1,62 @@
+.page-placeholder {
+  padding: 4.5rem 0 5rem;
+  background:
+    linear-gradient(180deg, rgba(247, 241, 234, 0.65), rgba(255, 253, 249, 0.2)),
+    var(--color-background);
+}
+
+.page-placeholder__inner {
+  max-width: 44rem;
+}
+
+.page-placeholder__eyebrow {
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--color-accent);
+}
+
+.page-placeholder h1 {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.page-placeholder__description,
+.page-placeholder__note {
+  margin: 0 0 1rem;
+  max-width: 36rem;
+  line-height: 1.75;
+  color: rgba(43, 37, 34, 0.8);
+}
+
+.page-placeholder__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+  margin-top: 1.75rem;
+}
+
+.page-placeholder__actions a {
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-accent-light);
+  padding-bottom: 0.2rem;
+}
+
+.page-placeholder__actions a:hover,
+.page-placeholder__actions a:focus-visible {
+  color: var(--color-accent);
+}
+
+.page-placeholder__actions a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}

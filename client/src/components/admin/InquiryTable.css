@@ -1,0 +1,112 @@
+.inquiry-table-wrap {
+  overflow-x: auto;
+  background: var(--color-white);
+  border: 1px solid rgba(43, 37, 34, 0.08);
+  box-shadow: var(--shadow-soft);
+}
+
+.inquiry-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.inquiry-table th,
+.inquiry-table td {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(43, 37, 34, 0.08);
+}
+
+.inquiry-table th {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(43, 37, 34, 0.65);
+  background: rgba(247, 241, 234, 0.65);
+}
+
+.inquiry-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.inquiry-table__name {
+  display: block;
+  font-weight: 600;
+}
+
+.inquiry-table__meta {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  color: rgba(43, 37, 34, 0.65);
+}
+
+.inquiry-table__services {
+  display: inline-block;
+  max-width: 14rem;
+  line-height: 1.45;
+  font-size: 0.9rem;
+}
+
+.inquiry-table__row--selected {
+  background: rgba(247, 241, 234, 0.7);
+}
+
+.inquiry-table__link {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.inquiry-table__link:hover,
+.inquiry-table__link:focus-visible {
+  color: var(--color-text);
+}
+
+@media (max-width: 760px) {
+  .inquiry-table {
+    min-width: 0;
+  }
+
+  .inquiry-table thead {
+    display: none;
+  }
+
+  .inquiry-table tr {
+    display: grid;
+    gap: 0.55rem;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(43, 37, 34, 0.08);
+  }
+
+  .inquiry-table td {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.75rem;
+    padding: 0;
+    border: none;
+  }
+
+  .inquiry-table td::before {
+    content: attr(data-label);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(43, 37, 34, 0.6);
+  }
+
+  .inquiry-table__services {
+    max-width: none;
+  }
+}

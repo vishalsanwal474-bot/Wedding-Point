@@ -1,0 +1,48 @@
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.6rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid transparent;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.status-badge--new {
+  background: rgba(166, 124, 82, 0.12);
+  border-color: rgba(166, 124, 82, 0.28);
+  color: #7a5735;
+}
+
+.status-badge--contacted {
+  background: rgba(70, 95, 120, 0.1);
+  border-color: rgba(70, 95, 120, 0.25);
+  color: #3d556c;
+}
+
+.status-badge--quoted {
+  background: rgba(90, 110, 70, 0.12);
+  border-color: rgba(90, 110, 70, 0.25);
+  color: #4d5f38;
+}
+
+.status-badge--confirmed {
+  background: rgba(60, 110, 90, 0.12);
+  border-color: rgba(60, 110, 90, 0.25);
+  color: #2f5d4b;
+}
+
+.status-badge--completed {
+  background: rgba(43, 37, 34, 0.08);
+  border-color: rgba(43, 37, 34, 0.16);
+  color: var(--color-text);
+}
+
+.status-badge--cancelled {
+  background: rgba(140, 70, 60, 0.1);
+  border-color: rgba(140, 70, 60, 0.22);
+  color: #8a4036;
+}

@@ -1,0 +1,29 @@
+.dashboard-card {
+  padding: 1.25rem 1.2rem;
+  background: var(--color-white);
+  border: 1px solid rgba(43, 37, 34, 0.08);
+  box-shadow: var(--shadow-soft);
+}
+
+.dashboard-card__label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.dashboard-card__value {
+  margin: 0.55rem 0 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.9rem, 3vw, 2.4rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.dashboard-card__hint {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(43, 37, 34, 0.65);
+}

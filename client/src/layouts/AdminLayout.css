@@ -1,0 +1,233 @@
+.admin-shell {
+  min-height: 100vh;
+  display: grid;
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.admin-sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  width: min(18rem, 86vw);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem 1.15rem;
+  background: var(--color-text);
+  color: var(--color-white);
+  transform: translateX(-105%);
+  transition: transform 0.25s ease;
+}
+
+.admin-sidebar--open {
+  transform: translateX(0);
+}
+
+.admin-sidebar__brand a {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--color-white);
+}
+
+.admin-sidebar__brand p {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent-light);
+}
+
+.admin-sidebar__nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.admin-sidebar__link {
+  display: block;
+  padding: 0.75rem 0.85rem;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.84rem;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.admin-sidebar__link:hover,
+.admin-sidebar__link:focus-visible,
+.admin-sidebar__link--active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+}
+
+.admin-sidebar__link:focus-visible {
+  outline: 2px solid var(--color-accent-light);
+  outline-offset: 1px;
+}
+
+.admin-sidebar__footer {
+  display: grid;
+  gap: 0.65rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.admin-sidebar__user {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.admin-sidebar__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: transparent;
+  color: var(--color-white);
+  padding: 0.55rem 0.85rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.admin-sidebar__logout:hover,
+.admin-sidebar__logout:focus-visible {
+  background: var(--color-white);
+  color: var(--color-text);
+}
+
+.admin-sidebar__site {
+  color: var(--color-accent-light);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.admin-sidebar__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  border: none;
+  background: rgba(20, 16, 14, 0.45);
+}
+
+.admin-shell__main {
+  min-width: 0;
+}
+
+.admin-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.75rem;
+  padding: 0.75rem 1.15rem;
+  background: rgba(255, 253, 249, 0.94);
+  border-bottom: 1px solid rgba(43, 37, 34, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.admin-topbar__toggle,
+.admin-topbar__logout {
+  border: 1px solid rgba(43, 37, 34, 0.14);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.admin-topbar__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.admin-topbar__logout {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.admin-topbar__title {
+  margin: 0;
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+}
+
+.admin-content {
+  padding: 1.5rem 1.15rem 2.5rem;
+}
+
+.admin-placeholder {
+  max-width: 42rem;
+  padding: 1.75rem;
+  background: var(--color-white);
+  border: 1px solid rgba(43, 37, 34, 0.08);
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-placeholder__eyebrow {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.admin-placeholder h1 {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.admin-placeholder p {
+  margin: 0;
+  line-height: 1.7;
+  color: rgba(43, 37, 34, 0.78);
+}
+
+@media (min-width: 960px) {
+  .admin-shell {
+    grid-template-columns: 16.5rem minmax(0, 1fr);
+  }
+
+  .admin-sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: auto;
+    transform: none;
+  }
+
+  .admin-sidebar__backdrop,
+  .admin-topbar__toggle {
+    display: none;
+  }
+
+  .admin-content {
+    padding: 2rem 2rem 3rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-sidebar,
+  .admin-sidebar__link {
+    transition: none;
+  }
+}
