@@ -68,7 +68,7 @@ const updateService = asyncHandler(async (req, res) => {
   }
 
   const service = await Service.findByIdAndUpdate(req.params.id, payload, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   });
 

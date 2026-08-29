@@ -82,6 +82,24 @@ const businessSettingsSchema = new mongoose.Schema(
       default: '',
       maxlength: 300,
     },
+    mapEmbedUrl: {
+      type: String,
+      trim: true,
+      default: '',
+      maxlength: 2000,
+    },
+    mapLatitude: {
+      type: Number,
+      default: null,
+      min: -90,
+      max: 90,
+    },
+    mapLongitude: {
+      type: Number,
+      default: null,
+      min: -180,
+      max: 180,
+    },
     instagram: {
       type: String,
       trim: true,

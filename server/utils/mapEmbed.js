@@ -1,42 +1,8 @@
-export function buildWhatsAppUrl(whatsapp, message) {
-  if (!whatsapp) {
-    return null;
-  }
-
-  const digits = String(whatsapp).replace(/\D/g, '');
-  if (!digits) {
-    return null;
-  }
-
-  const text = encodeURIComponent(
-    message ||
-      'Hello Wedding Point, I would like to know more about your wedding services.'
-  );
-
-  return `https://wa.me/${digits}?text=${text}`;
-}
-
-export function buildTelUrl(phone) {
-  if (!phone) {
-    return null;
-  }
-
-  const cleaned = String(phone).replace(/[^\d+]/g, '');
-  return cleaned ? `tel:${cleaned}` : null;
-}
-
-export function formatPageTitle(pageName, businessName = 'Wedding Point') {
-  if (!pageName) {
-    return businessName;
-  }
-  return `${pageName} | ${businessName}`;
-}
-
 /**
  * Accept a Google Maps embed URL or full iframe HTML and return a safe embed src.
  * Returns '' for empty input, or null when the value is not a valid Google Maps URL.
  */
-export function normalizeMapEmbedUrl(value) {
+function normalizeMapEmbedUrl(value) {
   if (value === undefined || value === null) {
     return '';
   }
@@ -125,13 +91,11 @@ function parseCoordinate(value) {
   return number;
 }
 
-/** Prefer embed URL, then coordinates, then address. */
-export function resolveContactMapUrl({
-  mapEmbedUrl,
-  mapLatitude,
-  mapLongitude,
-  address,
-} = {}) {
+/**
+ * Resolve map iframe src from embed URL, coordinates, or address.
+ * Priority: embed URL → lat/lng → address.
+ */
+function resolveContactMapUrl({ mapEmbedUrl, mapLatitude, mapLongitude, address } = {}) {
   const fromEmbed = normalizeMapEmbedUrl(mapEmbedUrl);
   if (fromEmbed) {
     return fromEmbed;
@@ -139,14 +103,7 @@ export function resolveContactMapUrl({
 
   const lat = parseCoordinate(mapLatitude);
   const lng = parseCoordinate(mapLongitude);
-  if (
-    lat !== null &&
-    lng !== null &&
-    lat >= -90 &&
-    lat <= 90 &&
-    lng >= -180 &&
-    lng <= 180
-  ) {
+  if (lat !== null && lng !== null && lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180) {
     return buildQueryEmbedUrl(`${lat},${lng}`);
   }
 
@@ -158,7 +115,7 @@ export function resolveContactMapUrl({
   return buildQueryEmbedUrl(trimmedAddress);
 }
 
-export function buildGoogleMapsLink({ mapLatitude, mapLongitude, address } = {}) {
+function buildGoogleMapsLink({ mapLatitude, mapLongitude, address } = {}) {
   const lat = parseCoordinate(mapLatitude);
   const lng = parseCoordinate(mapLongitude);
   if (lat !== null && lng !== null) {
@@ -172,3 +129,11 @@ export function buildGoogleMapsLink({ mapLatitude, mapLongitude, address } = {})
 
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(trimmedAddress)}`;
 }
+
+module.exports = {
+  normalizeMapEmbedUrl,
+  resolveContactMapUrl,
+  buildGoogleMapsLink,
+  buildQueryEmbedUrl,
+  parseCoordinate,
+};

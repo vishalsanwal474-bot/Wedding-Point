@@ -69,7 +69,7 @@ const updateTestimonial = asyncHandler(async (req, res) => {
   }
 
   const testimonial = await Testimonial.findByIdAndUpdate(req.params.id, payload, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   });
 

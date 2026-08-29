@@ -1,15 +1,25 @@
 const Service = require('../models/Service');
 const Package = require('../models/Package');
+const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 const { getOrCreateSettings } = require('../services/settingsService');
 const { sanitizeObjectStrings } = require('../utils/sanitize');
+const { normalizeMapEmbedUrl, parseCoordinate } = require('../utils/mapEmbed');
 
 const getSettings = asyncHandler(async (_req, res) => {
   const settings = await getOrCreateSettings();
+  const data = settings.toObject();
 
   res.status(200).json({
     success: true,
-    data: { settings },
+    data: {
+      settings: {
+        ...data,
+        mapEmbedUrl: data.mapEmbedUrl || '',
+        mapLatitude: data.mapLatitude ?? null,
+        mapLongitude: data.mapLongitude ?? null,
+      },
+    },
   });
 });
 
@@ -28,6 +38,40 @@ const updateSettings = asyncHandler(async (req, res) => {
     'commitmentText',
   ]);
 
+  // Normalize map embed from the raw body so iframe HTML is not damaged by sanitizers.
+  if (Object.prototype.hasOwnProperty.call(req.body, 'mapEmbedUrl')) {
+    const normalized = normalizeMapEmbedUrl(req.body.mapEmbedUrl);
+    if (req.body.mapEmbedUrl && !normalized) {
+      throw new AppError(
+        'Map embed must be a Google Maps embed URL, place link, or iframe HTML from Google Maps Share → Embed a map.',
+        400
+      );
+    }
+    payload.mapEmbedUrl = normalized || '';
+  }
+
+  if (Object.prototype.hasOwnProperty.call(req.body, 'mapLatitude')) {
+    const lat = parseCoordinate(req.body.mapLatitude);
+    if (req.body.mapLatitude !== '' && req.body.mapLatitude !== null && lat === null) {
+      throw new AppError('Latitude must be a valid number between -90 and 90.', 400);
+    }
+    if (lat !== null && (lat < -90 || lat > 90)) {
+      throw new AppError('Latitude must be between -90 and 90.', 400);
+    }
+    payload.mapLatitude = lat;
+  }
+
+  if (Object.prototype.hasOwnProperty.call(req.body, 'mapLongitude')) {
+    const lng = parseCoordinate(req.body.mapLongitude);
+    if (req.body.mapLongitude !== '' && req.body.mapLongitude !== null && lng === null) {
+      throw new AppError('Longitude must be a valid number between -180 and 180.', 400);
+    }
+    if (lng !== null && (lng < -180 || lng > 180)) {
+      throw new AppError('Longitude must be between -180 and 180.', 400);
+    }
+    payload.mapLongitude = lng;
+  }
+
   const scalarFields = [
     'businessName',
     'tagline',
@@ -35,6 +79,9 @@ const updateSettings = asyncHandler(async (req, res) => {
     'whatsapp',
     'email',
     'address',
+    'mapEmbedUrl',
+    'mapLatitude',
+    'mapLongitude',
     'instagram',
     'facebook',
     'youtube',
@@ -46,7 +93,7 @@ const updateSettings = asyncHandler(async (req, res) => {
 
   scalarFields.forEach((field) => {
     if (payload[field] !== undefined) {
-      settings[field] = payload[field];
+      settings.set(field, payload[field]);
     }
   });
 
@@ -74,11 +121,19 @@ const updateSettings = asyncHandler(async (req, res) => {
   }
 
   await settings.save();
+  const data = settings.toObject();
 
   res.status(200).json({
     success: true,
     message: 'Settings updated successfully',
-    data: { settings },
+    data: {
+      settings: {
+        ...data,
+        mapEmbedUrl: data.mapEmbedUrl || '',
+        mapLatitude: data.mapLatitude ?? null,
+        mapLongitude: data.mapLongitude ?? null,
+      },
+    },
   });
 });
 

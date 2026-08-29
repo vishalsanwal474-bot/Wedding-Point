@@ -6,6 +6,7 @@ import Toast from '../../components/admin/Toast';
 import { fetchAdminSettings, updateAdminSettings } from '../../services/adminApi';
 import { useSettings } from '../../context/SettingsContext';
 import { DEFAULT_PRICING } from '../../utils/constants';
+import { normalizeMapEmbedUrl, resolveContactMapUrl } from '../../utils/helpers';
 import { resolvePricingConfig } from '../../utils/pricing';
 import usePageTitle from '../../hooks/usePageTitle';
 import '../../components/admin/FormModal.css';
@@ -32,6 +33,15 @@ function AdminSettingsPage() {
         whatsapp: settings.whatsapp || '',
         email: settings.email || '',
         address: settings.address || '',
+        mapEmbedUrl: settings.mapEmbedUrl || '',
+        mapLatitude:
+          settings.mapLatitude === null || settings.mapLatitude === undefined
+            ? ''
+            : String(settings.mapLatitude),
+        mapLongitude:
+          settings.mapLongitude === null || settings.mapLongitude === undefined
+            ? ''
+            : String(settings.mapLongitude),
         instagram: settings.instagram || '',
         facebook: settings.facebook || '',
         youtube: settings.youtube || '',
@@ -84,15 +94,66 @@ function AdminSettingsPage() {
       return;
     }
 
+    const mapEmbedUrl = normalizeMapEmbedUrl(form.mapEmbedUrl);
+    if (form.mapEmbedUrl.trim() && mapEmbedUrl === null) {
+      setError(
+        'Map embed must be a Google Maps embed URL, place link, or iframe HTML from Google Maps Share → Embed a map.'
+      );
+      return;
+    }
+
+    const mapLatitude =
+      form.mapLatitude === '' || form.mapLatitude === null
+        ? null
+        : Number(form.mapLatitude);
+    const mapLongitude =
+      form.mapLongitude === '' || form.mapLongitude === null
+        ? null
+        : Number(form.mapLongitude);
+
+    if (
+      form.mapLatitude !== '' &&
+      (mapLatitude === null ||
+        Number.isNaN(mapLatitude) ||
+        mapLatitude < -90 ||
+        mapLatitude > 90)
+    ) {
+      setError('Latitude must be a number between -90 and 90.');
+      return;
+    }
+
+    if (
+      form.mapLongitude !== '' &&
+      (mapLongitude === null ||
+        Number.isNaN(mapLongitude) ||
+        mapLongitude < -180 ||
+        mapLongitude > 180)
+    ) {
+      setError('Longitude must be a number between -180 and 180.');
+      return;
+    }
+
     setSaving(true);
     setError(null);
 
     try {
       const payload = {
-        ...form,
+        businessName: form.businessName,
+        tagline: form.tagline,
+        phone: form.phone,
+        whatsapp: form.whatsapp,
+        email: form.email,
+        address: form.address,
+        mapEmbedUrl: mapEmbedUrl || '',
+        mapLatitude,
+        mapLongitude,
+        instagram: form.instagram,
+        facebook: form.facebook,
+        youtube: form.youtube,
         yearsExperience: Number(form.yearsExperience) || 0,
         weddingsCompleted: Number(form.weddingsCompleted) || 0,
         venuesServed: Number(form.venuesServed) || 0,
+        commitmentText: form.commitmentText,
         pricing: {
           perGuestBase: Number(form.pricing.perGuestBase) || 0,
           decoration: {
@@ -120,11 +181,32 @@ function AdminSettingsPage() {
 
       const saved = await updateAdminSettings(payload);
       setForm({
-        ...payload,
+        businessName: saved.businessName || '',
+        tagline: saved.tagline || '',
+        phone: saved.phone || '',
+        whatsapp: saved.whatsapp || '',
+        email: saved.email || '',
+        address: saved.address || '',
+        mapEmbedUrl: saved.mapEmbedUrl || '',
+        mapLatitude:
+          saved.mapLatitude === null || saved.mapLatitude === undefined
+            ? ''
+            : String(saved.mapLatitude),
+        mapLongitude:
+          saved.mapLongitude === null || saved.mapLongitude === undefined
+            ? ''
+            : String(saved.mapLongitude),
+        instagram: saved.instagram || '',
+        facebook: saved.facebook || '',
+        youtube: saved.youtube || '',
+        yearsExperience: saved.yearsExperience ?? 0,
+        weddingsCompleted: saved.weddingsCompleted ?? 0,
+        venuesServed: saved.venuesServed ?? 0,
+        commitmentText: saved.commitmentText || '',
         pricing: resolvePricingConfig(saved.pricing),
       });
       await refreshSettings();
-      setToast('Settings saved.');
+      setToast('Settings saved. Map updated on Contact page.');
     } catch (err) {
       setError(err.message || 'Unable to save settings.');
     } finally {
@@ -140,6 +222,8 @@ function AdminSettingsPage() {
     return <ErrorMessage message={error || 'Settings unavailable.'} onRetry={load} />;
   }
 
+  const mapPreviewUrl = resolveContactMapUrl(form);
+
   return (
     <div className="admin-settings">
       <header className="admin-crud__header">
@@ -147,8 +231,8 @@ function AdminSettingsPage() {
           <p className="admin-crud__eyebrow">Business</p>
           <h1>Settings</h1>
           <p className="admin-crud__intro">
-            Update contact details, statistics, social links, and calculator
-            pricing used across the website.
+            Update contact details, map location, statistics, social links, and
+            calculator pricing used across the website.
           </p>
         </div>
       </header>
@@ -205,14 +289,90 @@ function AdminSettingsPage() {
               />
             </div>
           </div>
+        </section>
+
+        <section className="admin-settings__section">
+          <h2>Location &amp; map</h2>
+          <p className="admin-settings__hint">
+            This address and map are saved with your settings and shown on the
+            public Contact page.
+          </p>
           <div className="admin-form__row">
             <label htmlFor="set-address">Address</label>
             <input
               id="set-address"
               value={form.address}
               onChange={(e) => updateField('address', e.target.value)}
+              placeholder="Street, City, State"
             />
           </div>
+          <div className="admin-form__grid admin-form__grid--2">
+            <div className="admin-form__row">
+              <label htmlFor="set-lat">Map latitude</label>
+              <input
+                id="set-lat"
+                type="number"
+                step="any"
+                min="-90"
+                max="90"
+                value={form.mapLatitude}
+                onChange={(e) => updateField('mapLatitude', e.target.value)}
+                placeholder="28.6139"
+              />
+            </div>
+            <div className="admin-form__row">
+              <label htmlFor="set-lng">Map longitude</label>
+              <input
+                id="set-lng"
+                type="number"
+                step="any"
+                min="-180"
+                max="180"
+                value={form.mapLongitude}
+                onChange={(e) => updateField('mapLongitude', e.target.value)}
+                placeholder="77.2090"
+              />
+            </div>
+          </div>
+          <p className="admin-settings__hint">
+            Right-click your place on Google Maps and copy the coordinates here
+            for an exact pin.
+          </p>
+          <div className="admin-form__row">
+            <label htmlFor="set-map">Google Maps embed (optional)</label>
+            <textarea
+              id="set-map"
+              rows={4}
+              value={form.mapEmbedUrl}
+              onChange={(e) => updateField('mapEmbedUrl', e.target.value)}
+              placeholder="Paste embed URL, place link, or iframe from Google Maps → Share → Embed a map"
+            />
+            <p className="admin-settings__hint">
+              Optional. If set, this overrides coordinates / address for the map.
+            </p>
+          </div>
+          {mapPreviewUrl ? (
+            <div className="admin-settings__map-block">
+              <h3>Saved map preview</h3>
+              {form.address ? (
+                <p className="admin-settings__map-address">{form.address}</p>
+              ) : null}
+              <div className="admin-settings__map-preview">
+                <iframe
+                  title="Map preview"
+                  src={mapPreviewUrl}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+          ) : (
+            <p className="admin-settings__hint">
+              Add an address, coordinates, or embed URL to preview and save the
+              map.
+            </p>
+          )}
         </section>
 
         <section className="admin-settings__section">

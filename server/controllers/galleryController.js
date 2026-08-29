@@ -76,7 +76,7 @@ const updateGalleryItem = asyncHandler(async (req, res) => {
   }
 
   const item = await GalleryItem.findByIdAndUpdate(req.params.id, payload, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   });
 

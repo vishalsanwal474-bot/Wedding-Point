@@ -1,6 +1,11 @@
 import Button from '../components/Button';
 import { useSettings } from '../context/SettingsContext';
-import { buildTelUrl, buildWhatsAppUrl } from '../utils/helpers';
+import {
+  buildGoogleMapsLink,
+  buildTelUrl,
+  buildWhatsAppUrl,
+  resolveContactMapUrl,
+} from '../utils/helpers';
 import usePageTitle from '../hooks/usePageTitle';
 import './PageShell.css';
 
@@ -9,6 +14,8 @@ function ContactPage() {
   const { settings } = useSettings();
   const whatsappUrl = buildWhatsAppUrl(settings.whatsapp);
   const telUrl = buildTelUrl(settings.phone);
+  const mapEmbedUrl = resolveContactMapUrl(settings);
+  const mapsLink = buildGoogleMapsLink(settings);
 
   return (
     <div className="page-shell">
@@ -43,7 +50,13 @@ function ContactPage() {
               {settings.address ? (
                 <li>
                   <span>Location</span>
-                  <p>{settings.address}</p>
+                  {mapsLink ? (
+                    <a href={mapsLink} target="_blank" rel="noreferrer">
+                      {settings.address}
+                    </a>
+                  ) : (
+                    <p>{settings.address}</p>
+                  )}
                 </li>
               ) : null}
             </ul>
@@ -69,6 +82,34 @@ function ContactPage() {
               ) : null}
             </div>
           </div>
+
+          {mapEmbedUrl ? (
+            <div className="contact-page__map">
+              <h2>Find Us</h2>
+              {settings.address ? (
+                <p className="contact-page__map-address">{settings.address}</p>
+              ) : null}
+              <div className="contact-page__map-frame">
+                <iframe
+                  title={`${settings.businessName || 'Wedding Point'} location`}
+                  src={mapEmbedUrl}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+              </div>
+              {mapsLink ? (
+                <a
+                  className="contact-page__map-link"
+                  href={mapsLink}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open in Google Maps
+                </a>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       </section>
     </div>

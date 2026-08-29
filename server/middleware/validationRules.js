@@ -137,6 +137,15 @@ const settingsRules = [
   body('whatsapp').optional().trim().isLength({ max: 30 }),
   body('email').optional({ checkFalsy: true }).isEmail().withMessage('Invalid business email'),
   body('address').optional().trim().isLength({ max: 300 }),
+  body('mapEmbedUrl').optional().trim().isLength({ max: 2000 }),
+  body('mapLatitude')
+    .optional({ nullable: true, checkFalsy: true })
+    .isFloat({ min: -90, max: 90 })
+    .withMessage('Latitude must be between -90 and 90'),
+  body('mapLongitude')
+    .optional({ nullable: true, checkFalsy: true })
+    .isFloat({ min: -180, max: 180 })
+    .withMessage('Longitude must be between -180 and 180'),
   body('instagram').optional().trim().isLength({ max: 300 }),
   body('facebook').optional().trim().isLength({ max: 300 }),
   body('youtube').optional().trim().isLength({ max: 300 }),

@@ -92,7 +92,7 @@ const updateInquiry = asyncHandler(async (req, res) => {
   }
 
   const inquiry = await Inquiry.findByIdAndUpdate(req.params.id, allowed, {
-    new: true,
+    returnDocument: 'after',
     runValidators: true,
   });
 
