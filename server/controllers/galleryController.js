@@ -1,3 +1,4 @@
+const cloudinary = require('../config/cloudinary');
 const GalleryItem = require('../models/GalleryItem');
 const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
@@ -46,7 +47,12 @@ const createGalleryItem = asyncHandler(async (req, res) => {
   ]);
 
   if (req.file) {
-    payload.imageUrl = `/uploads/gallery/${req.file.filename}`;
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'wedding-point/gallery',
+      resource_type: 'image',
+    });
+
+    payload.imageUrl = result.secure_url;
   }
 
   if (!payload.imageUrl) {
